@@ -1,8 +1,10 @@
 ﻿using Ardalis.GuardClauses;
-using Ardalis.Result;
 using Ardalis.SharedKernel;
-using Domain.AggregateModels.ServiceOfferRequestCategoryAggregate;
+using Domain.AggregateModels.CategoryAggregate;
+using Domain.AggregateModels.ResponseAggregate;
 using Domain.Extensions;
+using Domain.Utils;
+using JetBrains.Annotations;
 
 namespace Domain.AggregateModels.AdvertisementAggregate;
 
@@ -12,32 +14,34 @@ public class Advertisement:EntityBase, IAggregateRoot
     public string Description { get; private set; }
     public int UserId { get; private set; }
     public DateTime DateCreated { get; init; } = DateTime.UtcNow;
-    public int AdvertisementCategoryId { get; private set; }
-    public virtual AdvertisementCategory AdvertisementCategory { get; private set; }
+    public int CategoryId { get; private set; }
+    public Category Category { get; private set; }
+    public ICollection<Response> Responses { get; private set; } = new List<Response>();
 
-    protected Advertisement() { }
+    [UsedImplicitly]
+    private Advertisement() { }
 
-    public Advertisement(string name, string description, int userId, int advertisementCategoryId)
+    public Advertisement(string name, string description, int userId, int categoryId)
     {
-        Validate(name, description, userId, advertisementCategoryId);
+        Validate(name, description, userId, categoryId);
 
         Name = name;
         Description = description;
         UserId = userId;
-        AdvertisementCategoryId = advertisementCategoryId;
+        CategoryId = categoryId;
     }
 
-    public Result Update(string name, string description, int userId, int serviceOfferRequestCategoryId)
+    public OperationResult Update(string name, string description, int userId, int serviceOfferRequestCategoryId)
     {
         if (userId != UserId)
-            return Result.Forbidden("Has no access to this advertisement");
+            return OperationResult.Error("Has no access to this advertisement");
 
         Validate(name, description, userId, serviceOfferRequestCategoryId);
 
         Name = name;
         Description = description;
-        AdvertisementCategoryId = serviceOfferRequestCategoryId;
-        return Result.Success();
+        CategoryId = serviceOfferRequestCategoryId;
+        return OperationResult.Success();
     }
 
 
@@ -61,6 +65,5 @@ public class Advertisement:EntityBase, IAggregateRoot
 
         Guard.Against.NegativeOrZero(userId, nameof(userId), AdvertisementValidationMessages.UserIdMustBeGreaterThanZero);
         Guard.Against.NegativeOrZero(serviceOfferRequestCategoryId, nameof(serviceOfferRequestCategoryId), AdvertisementValidationMessages.AdvertisementCategoryIdMustBeGreaterThanZero);
-
     }
 }

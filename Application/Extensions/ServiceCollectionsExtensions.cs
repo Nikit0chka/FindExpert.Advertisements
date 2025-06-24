@@ -1,4 +1,4 @@
-﻿using Application.CQRS.Advertisements.CreateAdvertisement;
+﻿using Application.CQRS.Advertisements.Create;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 

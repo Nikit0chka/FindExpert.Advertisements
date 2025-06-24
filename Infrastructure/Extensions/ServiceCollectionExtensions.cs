@@ -27,9 +27,9 @@ public static class ServiceCollectionExtensions
         var dbConnectionString = configurationManager.GetConnectionString("DefaultConnection");
 
         serviceCollection.AddDbContext<DbContext, Context>
-            (options => options.UseLazyLoadingProxies().UseSqlServer(Guard.Against.NullOrEmpty(dbConnectionString,
-                                                                                               nameof(dbConnectionString),
-                                                                                               "Database connection string was null or empty.")));
+            (options => options.UseSqlServer(Guard.Against.NullOrEmpty(dbConnectionString,
+                                                                       nameof(dbConnectionString),
+                                                                       "Database connection string was null or empty.")));
 
         logger.LogInformation("Adding repositories...");
         serviceCollection.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));

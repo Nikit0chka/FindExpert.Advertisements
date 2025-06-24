@@ -8,13 +8,14 @@
 
     <ItemGroup>
       <PackageReference Include="Ardalis.GuardClauses" />
-      <PackageReference Include="Ardalis.Result" />
       <PackageReference Include="Ardalis.SharedKernel" />
+      <PackageReference Include="Ardalis.SmartEnum" />
+      <PackageReference Include="Ardalis.Specification" />
+      <PackageReference Include="JetBrains.Annotations" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="AggregateModels\" />
-      <Folder Include="AggregateModels\AdvertisementAggregate\Specifications\" />
+      <Folder Include="AggregateModels\CategoryAggregate\Specifications\" />
     </ItemGroup>
 
 </Project>

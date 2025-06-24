@@ -1,19 +1,26 @@
-﻿using Ardalis.Result;
+﻿using Domain.AggregateModels.ValueObjects;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace API.Helpers;
 
 internal static class HeaderHelper
 {
-    public static Result<int> GetUserIdFromHeader(HttpContext httpContext)
+    public static int? GetUserIdFromHeader(HttpContext httpContext)
     {
         var userIdHeader = httpContext.Request.Headers["X-User-Id"].FirstOrDefault();
 
-        if (string.IsNullOrEmpty(userIdHeader))
-            return Result.Error("User ID header is missing or empty.");
+        if (userIdHeader is null)
+            return null;
 
-        if (!int.TryParse(userIdHeader, out var userId))
-            return Result.Error("Invalid User ID format.");
+        return int.Parse(userIdHeader);
+    }
 
-        return userId;
+    public static ICollection<Role> GetUserRoleFromHeader(HttpContext httpContext)
+    {
+        var userIdHeader = httpContext.Request.Headers["X-User-Role"].FirstOrDefault();
+
+        var roles = JsonSerializer.Deserialize<ICollection<Role>>(userIdHeader!);
+
+        return roles!;
     }
 }

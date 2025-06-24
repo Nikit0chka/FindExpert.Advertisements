@@ -7,12 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ardalis.Result" />
-      <PackageReference Include="Ardalis.SharedKernel" />
+      <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <PackageReference Include="Ardalis.SharedKernel" />
+      <PackageReference Include="Ardalis.Specification" />
     </ItemGroup>
 
 </Project>
